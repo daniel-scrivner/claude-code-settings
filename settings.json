@@ -292,7 +292,9 @@
       "mcp__notion__*",
       "mcp__craft__*",
       "mcp__ghost__*",
-      "mcp__readwise__*"
+      "mcp__readwise__*",
+      "Read(/Users/scrivner/.claude/**)",
+      "Read(/Users/scrivner/Projects/claude-code-settings/**)"
     ]
   }
 }
