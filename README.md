@@ -6,19 +6,21 @@ This repository contains my personal Claude Code global settings that grant near
 
 ## Philosophy
 
-Claude Code is most productive when it can operate autonomously. This configuration allows Claude to execute **189 common shell commands** without confirmation prompts, enabling:
+Claude Code is most productive when it can operate autonomously. This configuration allows Claude to execute commands without confirmation prompts, enabling:
 
 - Seamless git workflows (commit, push, PR creation)
 - Package management across ecosystems (npm, pip, cargo, etc.)
 - File operations and system inspection
 - Cloud CLI tools (AWS, GCP, Azure, Kubernetes)
 - Database clients and development servers
+- Web searches and documentation fetches
+- MCP server integrations (GitHub, Slack, Linear, Notion, etc.)
 
 ## What's Included
 
 | File | Purpose |
 |------|---------|
-| `settings.json` | Permission allowlist (189 commands) |
+| `settings.json` | Permission allowlist (271 Bash commands, 97 WebFetch domains, 8 MCP servers) |
 | `CLAUDE.md` | Global instructions for Claude |
 | `install.sh` | One-line installer script |
 
@@ -94,6 +96,44 @@ cp CLAUDE.md ~/.claude/CLAUDE.md
 | Modern CLI | `bat`, `exa`, `eza`, `delta`, `rg`, `fd`, `fzf`, `ag`, `jq`, `yq`, `tree` |
 | Docs | `man`, `info`, `tldr`, `apropos` |
 | macOS | `open`, `pbcopy`, `pbpaste`, `brew` |
+
+### Script Execution
+
+| Pattern | Purpose |
+|---------|---------|
+| `./node_modules/.bin/*` | Local npm bin scripts (eslint, tsc, etc.) |
+| `./*` | Any relative path script execution |
+
+### Web Access (97 domains)
+
+| Category | Domains |
+|----------|---------|
+| Core | GitHub, MDN, Node.js, npm, Anthropic, OpenAI |
+| Languages | Python, Rust, Go, TypeScript docs |
+| Frameworks | React, Next.js, Vue, Svelte, Angular, Astro, Remix, Nuxt |
+| Backend | Express, FastAPI, Flask, Django |
+| Data | Prisma, Drizzle, Zod, tRPC, TanStack |
+| Testing | Vitest, Jest, Playwright, Cypress |
+| Build | esbuild, Vite, Turbo, Nx, pnpm, Yarn |
+| Databases | Supabase, Firebase, PlanetScale, Neon, Upstash, Redis, MongoDB, PostgreSQL |
+| Auth/Payments | Stripe, Clerk, Auth.js, Lucia |
+| UI | shadcn/ui, Radix, Headless UI, Mantine, Chakra, MUI, Ant Design, Framer |
+| Cloud | AWS, GCP, Azure, Docker, Kubernetes, Terraform |
+| Services | Linear, Notion, Asana, Slack, Craft, Ghost, Readwise |
+| Reference | Stack Overflow, Wikipedia |
+
+### MCP Server Integrations (8 servers)
+
+| Server | Purpose |
+|--------|---------|
+| `mcp__github__*` | GitHub API operations |
+| `mcp__slack__*` | Slack messaging |
+| `mcp__linear__*` | Linear issue tracking |
+| `mcp__asana__*` | Asana project management |
+| `mcp__notion__*` | Notion workspace |
+| `mcp__craft__*` | Craft documents |
+| `mcp__ghost__*` | Ghost CMS |
+| `mcp__readwise__*` | Readwise highlights |
 
 ## Commands NOT Included
 
