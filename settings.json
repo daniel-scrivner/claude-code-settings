@@ -270,6 +270,8 @@
       "Bash(launchctl *)",
       "Bash(reboot)",
       "Bash(shutdown *)",
+      "Bash(./node_modules/.bin/*)",
+      "Bash(./*)",
       "WebSearch",
       "WebFetch(https://sdk.vercel.ai/*)",
       "WebFetch(https://raw.githubusercontent.com/*)",
