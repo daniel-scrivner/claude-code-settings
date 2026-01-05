@@ -8,7 +8,7 @@ This repository contains my personal Claude Code global settings that grant full
 
 Claude Code is most productive when it can operate autonomously. This configuration uses broad wildcard patterns to eliminate permission prompts entirely, enabling:
 
-- Any shell command execution (`Bash(*)`)
+- Any shell command execution (`Bash`)
 - File read/edit/write anywhere (`Read`, `Edit`, `Write`)
 - Web access to any URL (`WebFetch`, `WebSearch`)
 - All MCP server operations (`mcp__*__*`)
@@ -48,7 +48,7 @@ The new configuration uses just 15 patterns for full autonomy:
 {
   "permissions": {
     "allow": [
-      "Bash(*)",
+      "Bash",
       "Read",
       "Edit",
       "Write",
@@ -72,7 +72,7 @@ The new configuration uses just 15 patterns for full autonomy:
 
 | Pattern | Scope |
 |---------|-------|
-| `Bash(*)` | All shell commands including complex pipelines with `&&`, `\|\|`, `2>&1`, etc. |
+| `Bash` | All shell commands including complex pipelines with `&&`, `\|\|`, `2>&1`, etc. |
 | `Read` | Read any file on the system |
 | `Edit` | Edit any file on the system |
 | `Write` | Create/overwrite any file on the system |
@@ -88,16 +88,14 @@ The new configuration uses just 15 patterns for full autonomy:
 | `mcp__readwise__*` | All Readwise MCP operations |
 | `mcp__composer__*` | All Composer MCP operations |
 
-### Why Broad Patterns?
+### Why `Bash` Without a Specifier?
 
-The previous approach used granular patterns like `Bash(git *)`, but these failed to match commands with shell operators:
+The previous approach used patterns like `Bash(git:*)`, but these only match the specific command prefix. Using `Bash` without any specifier matches ALL bash commands, eliminating edge cases with shell operators, pipes, and compound commands.
 
-```bash
-# This was NOT matched by "Bash(git *)"
-git checkout feat/branch 2>&1 || git fetch origin feat/branch && git checkout feat/branch
-```
-
-Using `Bash(*)` matches everything, eliminating edge cases.
+**Important syntax notes:**
+- `Bash` - Allows ALL bash commands (recommended for full autonomy)
+- `Bash(command:*)` - Allows specific command prefix (note the colon before `*`)
+- `Bash(*)` - **Invalid syntax** (does not work)
 
 ## Alternative: Dangerously Skip Permissions
 
