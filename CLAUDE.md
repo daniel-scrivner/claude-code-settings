@@ -21,8 +21,10 @@ The following command patterns run without permission prompts:
 Edit `~/.claude/settings.json` and add to the `permissions.allow` array:
 
 ```json
-"Bash(your-command *)"
+"Bash(your-command:*)"
 ```
+
+Note: Use `Bash` (without any specifier) to allow ALL bash commands, or `Bash(command:*)` for specific command prefixes.
 
 ### Full Autonomy Mode
 
