@@ -16,6 +16,19 @@
       "mcp__ghost__*",
       "mcp__readwise__*",
       "mcp__composer__*"
+    ],
+    "ask": [],
+    "deny": [
+      "Read(.env*)",
+      "Read(**/secrets*)",
+      "Read(**/*credentials*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf ~:*)",
+      "Bash(chmod -R 777 /:*)",
+      "Bash(mkfs:*)",
+      "Bash(dd if=:*)"
     ]
   }
 }

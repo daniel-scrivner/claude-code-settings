@@ -2,22 +2,21 @@
 
 > Maximal permissions configuration for [Claude Code](https://claude.ai/code) - Anthropic's official CLI for Claude.
 
-This repository contains my personal Claude Code global settings that grant full autonomous command execution. Use at your own risk.
+This repository contains my personal Claude Code global settings that grant full autonomous command execution while blocking dangerous operations. Use at your own risk.
 
 ## Philosophy
 
-Claude Code is most productive when it can operate autonomously. This configuration uses broad wildcard patterns to eliminate permission prompts entirely, enabling:
+Claude Code is most productive when it can operate autonomously. This configuration uses Claude Code's three permission tiers:
 
-- Any shell command execution (`Bash`)
-- File read/edit/write anywhere (`Read`, `Edit`, `Write`)
-- Web access to any URL (`WebFetch`, `WebSearch`)
-- All MCP server operations (`mcp__*__*`)
+- **Allow**: Broad patterns for full autonomy - no prompts
+- **Ask**: Empty - nothing requires confirmation (full trust mode)
+- **Deny**: Block dangerous operations - secrets and destructive commands
 
 ## What's Included
 
 | File | Purpose |
 |------|---------|
-| `settings.json` | Permission allowlist (15 broad patterns for full autonomy) |
+| `settings.json` | Permission configuration with allow/ask/deny tiers |
 | `CLAUDE.md` | Global instructions for Claude |
 | `install.sh` | One-line installer script |
 
@@ -40,9 +39,7 @@ cp CLAUDE.md ~/.claude/CLAUDE.md
 
 ## Permissions
 
-### Simple & Complete
-
-The new configuration uses just 15 patterns for full autonomy:
+### The Three Tiers
 
 ```json
 {
@@ -63,17 +60,30 @@ The new configuration uses just 15 patterns for full autonomy:
       "mcp__ghost__*",
       "mcp__readwise__*",
       "mcp__composer__*"
+    ],
+    "ask": [],
+    "deny": [
+      "Read(.env*)",
+      "Read(**/secrets*)",
+      "Read(**/*credentials*)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf ~:*)",
+      "Bash(chmod -R 777 /:*)",
+      "Bash(mkfs:*)",
+      "Bash(dd if=:*)"
     ]
   }
 }
 ```
 
-### What Each Pattern Covers
+### Allow Tier - Full Autonomy
 
 | Pattern | Scope |
 |---------|-------|
 | `Bash` | All shell commands including complex pipelines with `&&`, `\|\|`, `2>&1`, etc. |
-| `Read` | Read any file on the system |
+| `Read` | Read any file on the system (except denied patterns) |
 | `Edit` | Edit any file on the system |
 | `Write` | Create/overwrite any file on the system |
 | `WebFetch` | Fetch any URL from the web |
@@ -88,14 +98,32 @@ The new configuration uses just 15 patterns for full autonomy:
 | `mcp__readwise__*` | All Readwise MCP operations |
 | `mcp__composer__*` | All Composer MCP operations |
 
-### Why `Bash` Without a Specifier?
+### Ask Tier - Confirmation Required
 
-The previous approach used patterns like `Bash(git:*)`, but these only match the specific command prefix. Using `Bash` without any specifier matches ALL bash commands, eliminating edge cases with shell operators, pipes, and compound commands.
+Empty. Nothing requires confirmation in this configuration.
 
-**Important syntax notes:**
+### Deny Tier - Always Blocked
+
+| Pattern | Prevents |
+|---------|----------|
+| `Read(.env*)` | Reading environment files with secrets |
+| `Read(**/secrets*)` | Reading any secrets directories |
+| `Read(**/*credentials*)` | Reading credential files |
+| `Read(**/*.pem)` | Reading PEM certificates/keys |
+| `Read(**/*.key)` | Reading private key files |
+| `Bash(rm -rf /:*)` | Recursive deletion from root |
+| `Bash(rm -rf ~:*)` | Recursive deletion of home directory |
+| `Bash(chmod -R 777 /:*)` | Making entire filesystem world-writable |
+| `Bash(mkfs:*)` | Formatting filesystems |
+| `Bash(dd if=:*)` | Raw disk operations |
+
+### Syntax Notes
+
 - `Bash` - Allows ALL bash commands (recommended for full autonomy)
 - `Bash(command:*)` - Allows specific command prefix (note the colon before `*`)
 - `Bash(*)` - **Invalid syntax** (does not work)
+- `Read(.env*)` - Blocks files starting with `.env`
+- `Read(**/pattern)` - Blocks pattern in any directory
 
 ## Alternative: Dangerously Skip Permissions
 
@@ -107,12 +135,14 @@ claude --dangerously-skip-permissions
 
 ## Security Considerations
 
-This configuration grants Claude **complete access** to your system. Before using:
+This configuration grants Claude **near-complete access** to your system with sensible guardrails:
 
-1. **Understand the risks** - Claude can execute any command, read/write any file
-2. **Use in trusted environments** - Don't use on shared systems or with untrusted projects
-3. **Review Claude's actions** - Even with autonomy, review what Claude does
-4. **Backup important data** - Always have backups
+1. **Understand the risks** - Claude can execute most commands and read/write most files
+2. **Secrets are protected** - Environment files, credentials, and keys are blocked
+3. **Destructive commands blocked** - Cannot format drives or delete root/home
+4. **Use in trusted environments** - Don't use on shared systems or with untrusted projects
+5. **Review Claude's actions** - Even with autonomy, review what Claude does
+6. **Backup important data** - Always have backups
 
 ## CLAUDE.md Global Instructions
 
@@ -131,6 +161,7 @@ MIT - Use at your own risk.
 ## Contributing
 
 PRs welcome for:
+- Additional deny patterns for safety
 - Additional MCP server patterns
 - Documentation improvements
 - Platform-specific variations (Linux, Windows WSL)
