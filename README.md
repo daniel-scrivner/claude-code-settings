@@ -227,6 +227,16 @@ cp CLAUDE.md ~/.claude/CLAUDE.md
 │  Bash(mkfs:*)                   Formatting filesystems                     │
 │  Bash(dd if=:*)                 Raw disk operations                        │
 │                                                                            │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │  AGENT CONTROL (v2.1.0+) — Optional, not in default config           │  │
+│  │  ══════════════════════════════════════════════════════              │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                                                            │
+│  Task(AgentName)                Disable specific agent (if desired)        │
+│                                                                            │
+│  Example: Add "Task(Explore)" to deny if you want to prevent              │
+│  the Explore agent from running autonomously                              │
+│                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -248,6 +258,28 @@ cp CLAUDE.md ~/.claude/CLAUDE.md
 │  Read(**/pattern)           Blocks pattern in any directory     ✓ VALID    │
 │                                                                            │
 │  NOTE: Use colon before * for command prefixes                             │
+│                                                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│  NEW IN v2.1.0: WILDCARD PATTERNS                                          │
+│  ═══════════════════════════════════                                       │
+│                                                                            │
+│  Bash(npm *)                Allows npm followed by anything     ✓ VALID    │
+│  Bash(* install)            Allows anything ending in install   ✓ VALID    │
+│  Bash(git * main)           Allows git <anything> main          ✓ VALID    │
+│                                                                            │
+│  NOTE: Wildcards (*) can now appear at any position in Bash rules          │
+│                                                                            │
+├────────────────────────────────────────────────────────────────────────────┤
+│                                                                            │
+│  NEW IN v2.1.0: AGENT DENIAL                                               │
+│  ═══════════════════════════                                               │
+│                                                                            │
+│  Task(AgentName)            Disables a specific agent           ✓ VALID    │
+│  Task(Explore)              Disables the Explore agent          ✓ VALID    │
+│  Task(Plan)                 Disables the Plan agent             ✓ VALID    │
+│                                                                            │
+│  NOTE: Use in deny array to prevent specific agents from running           │
 │                                                                            │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
